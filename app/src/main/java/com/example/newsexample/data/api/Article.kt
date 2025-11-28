@@ -7,19 +7,19 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class Article(
     @SerialName("author")
-    val author: String? = null,
+    val author: String?,
     @SerialName("content")
-    val content: String = "",
+    val content: String?,
     @SerialName("description")
-    val description: String = "",
+    val description: String?,
     @SerialName("publishedAt")
-    val publishedAt: String = "",
+    val publishedAt: String?,
     @SerialName("source")
-    val source: Source = Source(),
+    val source: Source?,
     @SerialName("title")
-    val title: String = "",
+    val title: String,
     @SerialName("url")
-    val url: String = "",
+    val url: String?,
     @SerialName("urlToImage")
-    val urlToImage: String? = null
+    val urlToImage: String?
 )

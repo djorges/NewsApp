@@ -43,10 +43,10 @@ fun SimpleArticleUI(
 
                 Spacer(modifier = Modifier.height(14.dp))
                 Text(
-                    text = article.source.name,
+                    text = article.source?.name.toString(),
                 )
                 Text(
-                    text = article.publishedAt,
+                    text = article.publishedAt ?: "",
                 )
             }
             Spacer(modifier = Modifier.height(10.dp))
@@ -62,7 +62,7 @@ fun SimpleArticleUI(
                 )
                 Spacer(modifier = Modifier.height(10.dp))
                 Text(
-                    text = article.description,
+                    text = article.description?: "",
                     style = TextStyle(
                         lineHeight = 10.sp
                     ),
@@ -73,6 +73,7 @@ fun SimpleArticleUI(
         }
     }
 }
+/*
 
 @AppPreview
 @Composable
@@ -85,4 +86,4 @@ private fun Preview(){
             publishedAt = stringResource(R.string.publish_date)
         )
     )
-}
+}*/

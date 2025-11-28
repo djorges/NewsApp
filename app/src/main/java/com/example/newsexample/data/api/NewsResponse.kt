@@ -9,7 +9,7 @@ data class NewsResponse(
     @SerialName("articles")
     val articles: List<Article> = listOf(),
     @SerialName("status")
-    val status: String = "",
+    val status: String,
     @SerialName("totalResults")
-    val totalResults: Int = 0
+    val totalResults: Int
 )

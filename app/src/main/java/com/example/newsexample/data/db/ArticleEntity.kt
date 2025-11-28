@@ -6,8 +6,7 @@ import androidx.room.PrimaryKey
 import com.example.newsexample.data.api.Source
 
 @Entity(
-    tableName = "articles",
-    ignoredColumns = ["is_saved"]
+    tableName = "articles"
 )
 data class ArticleEntity(
     @PrimaryKey(autoGenerate = true)
@@ -19,11 +18,8 @@ data class ArticleEntity(
     val description: String = "",
     @ColumnInfo(name = "published_at")
     val publishedAt: String = "",
-    val source: Source = Source(),
+    val source: Source,
     val url: String = "",
     @ColumnInfo(name = "url_to_image")
-    val urlToImage: String? = null,
-
-    @ColumnInfo(name = "is_saved")
-    val isSaved: Boolean = false
+    val urlToImage: String? = null
 )

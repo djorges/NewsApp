@@ -1,6 +1,6 @@
 package com.example.newsexample.data.api
 
-import com.example.newsexample.utils.Constants
+import com.example.newsexample.data.api.Constants
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Query
