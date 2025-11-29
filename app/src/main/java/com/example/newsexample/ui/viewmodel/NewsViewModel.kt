@@ -1,5 +1,7 @@
 package com.example.newsexample.ui.viewmodel
 
+import androidx.compose.material3.SnackbarHostState
+import androidx.compose.runtime.remember
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -18,6 +20,9 @@ class NewsViewModel(
     private val _breakingNews = MutableStateFlow<NewsState>(NewsState.Empty)
     val breakingNews: StateFlow<NewsState> = _breakingNews.asStateFlow()
 
+    private val _searchNews = MutableStateFlow<NewsState>(NewsState.Empty)
+    val searchNews: StateFlow<NewsState> = _searchNews.asStateFlow()
+    val snackbarHostState =  SnackbarHostState()
 
     init {
         getTopHeadLinesNews("us")
@@ -42,17 +47,17 @@ class NewsViewModel(
 
     fun getSearchNews(searchKeyWord: String) {
         viewModelScope.launch {
-            _breakingNews.value = NewsState.Loading
+            _searchNews.value = NewsState.Loading
 
             try {
                 val response: Response<NewsResponse> = newsRepository.getSearchNews(searchKeyWord)
                 if(response.isSuccessful && response.body() != null){
-                    _breakingNews.value = NewsState.Success(response.body()!!)
+                    _searchNews.value = NewsState.Success(response.body()!!)
                 }else{
-                    _breakingNews.value = NewsState.Error(response.message())
+                    _searchNews.value = NewsState.Error(response.message())
                 }
             }catch (e: Exception){
-                _breakingNews.value = NewsState.Error(e.message.toString())
+                _searchNews.value = NewsState.Error(e.message.toString())
             }
         }
     }

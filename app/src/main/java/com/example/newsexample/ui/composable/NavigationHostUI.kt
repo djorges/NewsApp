@@ -8,11 +8,13 @@ import androidx.navigation.compose.composable
 import com.example.newsexample.ui.screen.HomeScreen
 import com.example.newsexample.ui.screen.SavedScreen
 import com.example.newsexample.ui.screen.SearchScreen
+import com.example.newsexample.ui.viewmodel.NewsViewModel
 
 @Composable
 fun NavigationHostUI(
     navController: NavHostController,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    viewModel: NewsViewModel
 ){
     NavHost(
         navController = navController,
@@ -20,10 +22,10 @@ fun NavigationHostUI(
         modifier = modifier
     ){
         composable(Screens.HomeScreen.route){
-            HomeScreen()
+            HomeScreen(viewModel = viewModel)
         }
         composable (Screens.SearchScreen.route){
-            SearchScreen()
+            SearchScreen(viewModel = viewModel)
         }
         composable (Screens.SavedScreen.route){
             SavedScreen()

@@ -1,14 +1,25 @@
 package com.example.newsexample.ui.composable
 
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.DateRange
+import androidx.compose.material.icons.filled.Place
+import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -28,50 +39,79 @@ fun SimpleArticleUI(
     modifier: Modifier = Modifier,
     article: Article
 ){
-    Column(
-        modifier = modifier.fillMaxWidth()
-    ){
-        Row{
-            Column {
-                AsyncImage(
-                    model = article.urlToImage,
-                    contentDescription = "News Logo",
-                    modifier = Modifier.size(width=160.dp, height=90.dp),
-                    contentScale = ContentScale.Crop,
-                    placeholder = painterResource(R.drawable.newslogo)
-                )
 
-                Spacer(modifier = Modifier.height(14.dp))
-                Text(
-                    text = article.source?.name.toString(),
-                )
-                Text(
-                    text = article.publishedAt ?: "",
-                )
-            }
-            Spacer(modifier = Modifier.height(10.dp))
-            Column {
+        Row(
+            modifier = modifier
+                .fillMaxWidth()
+                .padding(16.dp),
+            verticalAlignment = Alignment.CenterVertically,
+        ){
+            AsyncImage(
+                model = article.urlToImage,
+                contentDescription = "News Logo",
+                modifier = Modifier
+                    .size(width = 120.dp, height = 120.dp)
+                    .clip(RoundedCornerShape(5.dp)),
+                contentScale = ContentScale.Crop,
+                placeholder = painterResource(R.drawable.newslogo),
+                error = painterResource(R.drawable.outline_error_24)
+            )
+
+            Column(modifier = Modifier.weight(1f)) {
+                // Title
                 Text(
                     text = article.title,
-                    fontWeight = FontWeight.Bold,
-                    style = TextStyle(
-                        lineHeight = 10.sp
-                    ),
-                    maxLines= 3,
+                    style = MaterialTheme.typography.titleMedium,
+                    maxLines = 3,
                     overflow = TextOverflow.Ellipsis
                 )
-                Spacer(modifier = Modifier.height(10.dp))
+
+                Spacer(modifier = Modifier.height(8.dp))
+
+                // Description
                 Text(
-                    text = article.description?: "",
-                    style = TextStyle(
-                        lineHeight = 10.sp
-                    ),
-                    maxLines= 5,
+                    text = article.description ?: "",
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    maxLines = 2,
                     overflow = TextOverflow.Ellipsis
                 )
+                Spacer(modifier = Modifier.height(12.dp))
+
+                // Source
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    Icon(
+                        imageVector = Icons.Default.Place,
+                        contentDescription = "Source",
+                        modifier = Modifier.size(14.dp),
+                        tint = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
+                    Spacer(modifier = Modifier.width(4.dp))
+                    Text(
+                        text = article.source?.name ?: "Unknown Source",
+                        style = MaterialTheme.typography.labelMedium,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
+                }
+
+                Spacer(modifier = Modifier.height(4.dp))
+                // Publication Date
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    Icon(
+                        imageVector = Icons.Default.DateRange,
+                        contentDescription = "Publication Date",
+                        modifier = Modifier.size(14.dp),
+                        tint = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
+                    Spacer(modifier = Modifier.width(4.dp))
+                    Text(
+                        text = article.publishedAt?.take(10) ?: "Unknown Date",
+                        style = MaterialTheme.typography.labelMedium,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
+                }
             }
         }
-    }
 }
 /*
 
