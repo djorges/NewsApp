@@ -1,17 +1,23 @@
 package com.example.newsexample.ui.screen
 
+import android.content.Intent
 import android.content.res.Configuration
+import android.net.Uri
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowForward
+import androidx.compose.material.icons.filled.ArrowForward
 import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material.icons.filled.Person
@@ -29,6 +35,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -39,6 +46,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontFamily
@@ -50,6 +58,12 @@ import coil3.compose.AsyncImage
 import com.example.newsexample.R
 import com.example.newsexample.data.api.Article
 import com.example.newsexample.data.api.Source
+import java.time.OffsetDateTime
+import java.time.format.DateTimeFormatter
+import java.util.Date
+import java.util.Locale
+import kotlin.text.format
+import androidx.core.net.toUri
 
 
 /**
@@ -62,13 +76,12 @@ fun DetailScreen(
     article: Article,
     onAddToFavorites: () -> Unit = {},
     onShare: () -> Unit = {},
-    onDetails: () -> Unit= {},
     onRateUp: () -> Unit = {},
     onRateDown: () -> Unit = {},
 ) {
     val serif = FontFamily.Serif
-    var menuExpanded by remember { mutableStateOf(false) }
-    //TODO: Create viewModel, then implement actions
+    val context = LocalContext.current
+
 
     Column(modifier = Modifier.fillMaxWidth()){
         // Imagen principal
@@ -78,8 +91,7 @@ fun DetailScreen(
                 contentDescription = null,
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(180.dp)
-                    .clip(RoundedCornerShape(12.dp)),
+                    .height(180.dp),
                 contentScale = ContentScale.Crop,
                 placeholder = painterResource(R.drawable.newslogo),
                 error = painterResource(R.drawable.outline_error_24)
@@ -104,40 +116,122 @@ fun DetailScreen(
             // Metadata
             Row(verticalAlignment = Alignment.CenterVertically){
                 Row(verticalAlignment = Alignment.CenterVertically) {
-                    Icon(Icons.Default.Person, contentDescription = null)
+                    Icon(
+                        Icons.Default.Person,
+                        contentDescription = stringResource(R.string.details_text_default_author),
+                        tint = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.8f)
+                    )
                     Text(
                         text = article.author ?: stringResource(R.string.details_text_default_author),
                         fontFamily = serif,
-                        modifier = Modifier.padding(start = 6.dp)
+                        modifier = Modifier.padding(start = 6.dp),
+                        color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.8f)
                     )
                 }
 
                 Spacer(modifier = Modifier.width(10.dp))
 
                 Row(verticalAlignment = Alignment.CenterVertically) {
-                    Icon(painterResource(R.drawable.baseline_calendar_today_24), contentDescription = null)
-                    Text(
-                        text = article.publishedAt ?: stringResource(R.string.details_text_default_date),
-                        fontFamily = serif,
-                        modifier = Modifier.padding(start = 6.dp)
+                    Icon(
+                        painterResource(R.drawable.baseline_calendar_today_24),
+                        contentDescription = null,
+                        tint = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.8f)
                     )
-                }
-                // Rate Up / Down
-                Row(
-                    modifier = Modifier.weight(1f),
-                    horizontalArrangement = Arrangement.End
-                ) {
-                    IconButton(onClick = onRateUp) {
-                        Icon(painterResource(R.drawable.baseline_thumb_up_off_alt_24), contentDescription = "Rate Up")
-                    }
-
-                    IconButton(onClick = onRateDown) {
-                        Icon(painterResource(R.drawable.outline_thumb_down_24), contentDescription = "Rate Down")
-                    }
+                    Text(
+                        text = formatDateUtil(article.publishedAt) ?: stringResource(R.string.details_text_default_date),
+                        fontFamily = serif,
+                        modifier = Modifier.padding(start = 6.dp),
+                        color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.8f)
+                    )
                 }
             }
 
             Spacer(modifier = Modifier.height(8.dp))
+
+            //Actions
+            Row(verticalAlignment = Alignment.CenterVertically) {
+
+                val smallPadding = PaddingValues(8.dp)
+                val smallIconSize = 20.dp
+                val smallTextSize = 12.sp
+
+                TextButton(
+                    onClick = {
+                        //TODO: Create viewModel, then implement action
+
+                    },
+                    contentPadding = smallPadding
+                ) {
+                    Icon(
+                        painterResource(R.drawable.outline_bookmarks_24),
+                        contentDescription = stringResource(R.string.details_menu_action_favorites),
+                        modifier = Modifier.size(smallIconSize)
+                    )
+                    Text(
+                        text = stringResource(R.string.details_menu_action_favorites),
+                        fontFamily = serif,
+                        fontSize = smallTextSize,
+                        modifier = Modifier.padding(start = 4.dp)
+                    )
+                }
+
+                TextButton(
+                    onClick = {
+
+                        //Share action
+                        val sendIntent: Intent = Intent().apply {
+                            action = Intent.ACTION_SEND
+                            putExtra(Intent.EXTRA_TEXT, article.url ?: "")
+                            putExtra(Intent.EXTRA_SUBJECT, article.title)
+                            type = "text/plain"
+                        }
+
+                        val shareIntent = Intent.createChooser(sendIntent, null)
+                        context.startActivity(shareIntent)
+                    } ,
+                    contentPadding = smallPadding
+                ) {
+                    Icon(
+                        Icons.Default.Share,
+                        contentDescription = stringResource(R.string.details_menu_action_share),
+                        modifier = Modifier.size(smallIconSize)
+                    )
+                    Text(
+                        stringResource(R.string.details_menu_action_share),
+                        fontFamily = serif,
+                        fontSize = smallTextSize,
+                        modifier = Modifier.padding(start = 4.dp)
+                    )
+                }
+
+                Row(
+                    modifier = Modifier.weight(1f),
+                    horizontalArrangement = Arrangement.End
+                ) {
+
+                    TextButton(
+                        onClick = onRateUp,
+                        contentPadding = smallPadding
+                    ) {
+                        Icon(
+                            painterResource(R.drawable.baseline_thumb_up_off_alt_24),
+                            contentDescription = stringResource(R.string.details_btn_rateup),
+                            modifier = Modifier.size(smallIconSize)
+                        )
+                    }
+
+                    TextButton(
+                        onClick = onRateDown,
+                        contentPadding = smallPadding
+                    ) {
+                        Icon(
+                            painterResource(R.drawable.outline_thumb_down_24),
+                            contentDescription = stringResource(R.string.details_btn_ratedown),
+                            modifier = Modifier.size(smallIconSize)
+                        )
+                    }
+                }
+            }
 
             // Description
             article.description?.let {
@@ -153,48 +247,19 @@ fun DetailScreen(
 
             //Actions
             Box(modifier = Modifier.fillMaxWidth(), contentAlignment = Alignment.CenterEnd) {
+
                 FloatingActionButton(
-                    onClick = { menuExpanded = true }
+                    onClick = {
+                        //Navigate to URL
+                        article.url?.let { url ->
+                            val intent = Intent(Intent.ACTION_VIEW, url.toUri())
+                            context.startActivity(intent)
+                        }
+                    }
                 ) {
-                    Icon(Icons.Default.MoreVert, contentDescription = stringResource(R.string.details_menu_description))
-                }
-                DropdownMenu(
-                    expanded = menuExpanded,
-                    onDismissRequest = { menuExpanded = false }
-                ) {
-                    DropdownMenuItem(
-                        text = { Text(stringResource(R.string.details_menu_action_favorites)) },
-                        onClick = {
-                            menuExpanded = false
-                            onAddToFavorites()
-                        },
-                        leadingIcon = {
-                            Icon(painterResource(R.drawable.outline_bookmarks_24), contentDescription = null)
-                        }
-                    )
-
-
-                    DropdownMenuItem(
-                        text = { Text(stringResource(R.string.details_menu_action_share)) },
-                        onClick = {
-                            menuExpanded = false
-                            onShare()
-                        },
-                        leadingIcon = {
-                            Icon(Icons.Default.Share, contentDescription = null)
-                        }
-                    )
-
-                    //TODO: This can be deleted
-                    DropdownMenuItem(
-                        text = { Text("Details") },
-                        onClick = {
-                            menuExpanded = false
-                            onDetails()
-                        },
-                        leadingIcon = {
-                            Icon(painterResource(R.drawable.baseline_info_outline_24), contentDescription = null)
-                        }
+                    Icon(
+                        Icons.AutoMirrored.Filled.ArrowForward,
+                        contentDescription = stringResource(R.string.details_menu_description)
                     )
                 }
             }
@@ -203,7 +268,26 @@ fun DetailScreen(
 }
 
 
-@Preview(showBackground = true, device = "id:pixel_9", showSystemUi = false,
+fun formatDateUtil(dateString: String?): String? {
+    if (dateString.isNullOrBlank()) {
+        return null
+    }
+
+    val inputFormatter = DateTimeFormatter.ISO_OFFSET_DATE_TIME
+    val outputFormatter = DateTimeFormatter.ofPattern("dd-MM-yyyy", Locale.getDefault())
+
+    return try {
+        val date = OffsetDateTime.parse(dateString, inputFormatter)
+        date.format(outputFormatter)
+    } catch (e: Exception) {
+        null
+    }
+}
+
+
+
+@Preview(
+    showBackground = true, device = "id:pixel_9", showSystemUi = false,
 )
 @Composable
 fun DetailScreenPreview() {

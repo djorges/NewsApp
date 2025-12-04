@@ -1,11 +1,9 @@
 package com.example.newsexample.ui.composable
 
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -24,11 +22,8 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import coil3.compose.AsyncImage
 import com.example.newsexample.AppPreview
 import com.example.newsexample.R
@@ -42,7 +37,7 @@ import com.example.newsexample.data.api.Source
  * */
 
 @Composable
-fun SimpleArticleUI(
+fun ArticleCard(
     modifier: Modifier = Modifier,
     article: Article,
 ){
@@ -54,10 +49,9 @@ fun SimpleArticleUI(
         ){
             AsyncImage(
                 model = article.urlToImage,
-                contentDescription = "News Logo",
+                contentDescription = stringResource(R.string.article_img_default),
                 modifier = Modifier
-                    .size(width = 120.dp, height = 120.dp)
-                    .clip(RoundedCornerShape(5.dp)),
+                    .size(width = 120.dp, height = 120.dp),
                 contentScale = ContentScale.Crop,
                 placeholder = painterResource(R.drawable.newslogo),
                 error = painterResource(R.drawable.outline_error_24)
@@ -76,7 +70,7 @@ fun SimpleArticleUI(
 
                 // Description
                 Text(
-                    text = article.description ?: "",
+                    text = article.description ?: stringResource(R.string.article_text_description_default),
                     style = MaterialTheme.typography.bodyMedium,
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                     maxLines = 2,
@@ -88,13 +82,13 @@ fun SimpleArticleUI(
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     Icon(
                         imageVector = Icons.Default.Place,
-                        contentDescription = "Source",
+                        contentDescription = stringResource(R.string.article_text_source_default),
                         modifier = Modifier.size(14.dp),
                         tint = MaterialTheme.colorScheme.onSurfaceVariant
                     )
                     Spacer(modifier = Modifier.width(4.dp))
                     Text(
-                        text = article.source?.name ?: "Unknown Source",
+                        text = article.source?.name ?: stringResource(R.string.article_text_source_default),
                         style = MaterialTheme.typography.labelMedium,
                         color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
@@ -105,13 +99,13 @@ fun SimpleArticleUI(
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     Icon(
                         imageVector = Icons.Default.DateRange,
-                        contentDescription = "Publication Date",
+                        contentDescription = stringResource(R.string.article_text_date_default),
                         modifier = Modifier.size(14.dp),
                         tint = MaterialTheme.colorScheme.onSurfaceVariant
                     )
                     Spacer(modifier = Modifier.width(4.dp))
                     Text(
-                        text = article.publishedAt?.take(10) ?: "Unknown Date",
+                        text = article.publishedAt?.take(10) ?: stringResource(R.string.article_text_date_default),
                         style = MaterialTheme.typography.labelMedium,
                         color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
@@ -119,17 +113,20 @@ fun SimpleArticleUI(
             }
         }
 }
-/*
 
 @AppPreview
 @Composable
 private fun Preview(){
-    SimpleArticleUI(
+    ArticleCard(
         article = Article(
-            title = stringResource(R.string.title),
-            description = stringResource(R.string.description),
-            source = Source(name = stringResource(R.string.newspaper)),
-            publishedAt = stringResource(R.string.publish_date)
+            author = "Juan Pérez",
+            content = "Contenido extenso de ejemplo para el artículo.",
+            description = "Una breve descripción del artículo de prueba",
+            publishedAt = "2025-01-10",
+            source = Source(id = "1", name = "Diario Ejemplo"),
+            title = "Título de Prueba Estilo Diario",
+            url = "https://ejemplo.com",
+            urlToImage = "https://picsum.photos/800/400"
         )
     )
-}*/
+}

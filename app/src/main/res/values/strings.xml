@@ -7,7 +7,19 @@
     <string name="empty_list">No data found</string>
     <string name="details_text_default_author">Unknown Author</string>
     <string name="details_text_default_date">Date is not available</string>
-    <string name="details_menu_action_favorites">Add to favorites</string>
+    <string name="details_menu_action_favorites">Save</string>
     <string name="details_menu_action_share">Share</string>
     <string name="details_menu_description">Menu</string>
+    <string name="article_img_default">News Logo</string>
+    <string name="article_text_description_default">Unknown description</string>
+    <string name="article_text_source_default">Unknown Source</string>
+    <string name="article_text_date_default">Publication Date</string>
+    <string name="details_btn_rateup">Rate Up</string>
+    <string name="details_btn_ratedown">Rate Down</string>
+    <string name="dialog_txt_filters">Filters</string>
+    <string name="dialog_btn_apply">Apply</string>
+    <string name="dialog_btn_cancel">Cancel</string>
+    <string name="dialog_btn_select_country">Seleccionar país</string>
+    <string name="dialog_txt_country">Country</string>
+    <string name="home_txt_dismiss">Dismiss</string>
 </resources>

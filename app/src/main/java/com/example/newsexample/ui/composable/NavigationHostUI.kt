@@ -49,6 +49,7 @@ fun NavigationHostUI(
                 article = article
             )
         }
+
         composable (Screens.SavedScreen.route){
             SavedScreen()
         }

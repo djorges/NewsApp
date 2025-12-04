@@ -2,12 +2,8 @@ package com.example.newsexample.ui.screen
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
@@ -25,7 +21,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.example.newsexample.data.api.Article
-import com.example.newsexample.ui.composable.SimpleArticleUI
+import com.example.newsexample.ui.composable.ArticleCard
 import com.example.newsexample.ui.state.NewsState
 import com.example.newsexample.ui.viewmodel.NewsViewModel
 
@@ -70,7 +66,7 @@ fun SearchScreen(
                     items(result.data.articles, key = { article: Article ->
                         article.title
                     }){ article ->
-                        SimpleArticleUI(
+                        ArticleCard(
                             article = article,
                             modifier = Modifier.fillMaxWidth()
                         )

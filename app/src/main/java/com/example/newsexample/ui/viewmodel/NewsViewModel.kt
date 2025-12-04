@@ -22,10 +22,14 @@ class NewsViewModel(
 
     private val _searchNews = MutableStateFlow<NewsState>(NewsState.Empty)
     val searchNews: StateFlow<NewsState> = _searchNews.asStateFlow()
+
+    private val _selectedCountryCode = MutableStateFlow("us")
+    val selectedCountryCode: StateFlow<String> = _selectedCountryCode.asStateFlow()
+
     val snackbarHostState =  SnackbarHostState()
 
     init {
-        getTopHeadLinesNews("us")
+        getTopHeadLinesNews(_selectedCountryCode.value)
     }
 
     fun getTopHeadLinesNews(countryCode: String) {
