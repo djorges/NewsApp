@@ -1,5 +1,6 @@
 package com.example.newsexample.ui.screen
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
@@ -33,7 +34,8 @@ import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun HomeScreen(
-    viewModel: NewsViewModel
+    viewModel: NewsViewModel,
+    onItemClick: (Article) -> Unit = {}
 ) {
     val state by viewModel.breakingNews.collectAsState()
     val snackbarHostState = viewModel.snackbarHostState
@@ -80,6 +82,7 @@ fun HomeScreen(
                         SimpleArticleUI(
                             article = article,
                             modifier = Modifier.fillMaxWidth()
+                                .clickable(onClick = { onItemClick(article) })
                         )
                     }
                 }

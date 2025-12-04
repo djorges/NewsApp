@@ -5,4 +5,9 @@
     <string name="newspaper">New York Times</string>
     <string name="publish_date">12/5/2025</string>
     <string name="empty_list">No data found</string>
+    <string name="details_text_default_author">Unknown Author</string>
+    <string name="details_text_default_date">Date is not available</string>
+    <string name="details_menu_action_favorites">Add to favorites</string>
+    <string name="details_menu_action_share">Share</string>
+    <string name="details_menu_description">Menu</string>
 </resources>

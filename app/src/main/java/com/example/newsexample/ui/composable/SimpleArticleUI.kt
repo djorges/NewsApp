@@ -1,5 +1,6 @@
 package com.example.newsexample.ui.composable
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -34,17 +35,22 @@ import com.example.newsexample.R
 import com.example.newsexample.data.api.Article
 import com.example.newsexample.data.api.Source
 
+
+/**
+ *
+ * TODO:
+ * */
+
 @Composable
 fun SimpleArticleUI(
     modifier: Modifier = Modifier,
-    article: Article
+    article: Article,
 ){
-
         Row(
             modifier = modifier
-                .fillMaxWidth()
                 .padding(16.dp),
             verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.spacedBy(16.dp)
         ){
             AsyncImage(
                 model = article.urlToImage,

@@ -36,16 +36,18 @@ fun RouteScreen(
     Scaffold(
         modifier = modifier.fillMaxSize(),
         topBar = {
-            CustomTopAppBar(
-                title = currentRoute,
-                modifier = Modifier.fillMaxWidth(),
-                onUserSearchQuery = {
-                    viewModel.getSearchNews(it)
-                },
-                onSearchIconClicked = {
-                    navHostController.navigate(Screens.SearchScreen.route)
-                }
-            )
+            if(currentRoute == Screens.SearchScreen.route || currentRoute == Screens.HomeScreen.route){
+                CustomTopAppBar(
+                    title = currentRoute,
+                    modifier = Modifier.fillMaxWidth(),
+                    onUserSearchQuery = {
+                        viewModel.getSearchNews(it)
+                    },
+                    onSearchIconClicked = {
+                        navHostController.navigate(Screens.SearchScreen.route)
+                    }
+                )
+            }
         },
         bottomBar = {
             BottomAppBarUI(
