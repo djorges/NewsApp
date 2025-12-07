@@ -19,7 +19,8 @@
     <string name="dialog_txt_filters">Filters</string>
     <string name="dialog_btn_apply">Apply</string>
     <string name="dialog_btn_cancel">Cancel</string>
-    <string name="dialog_btn_select_country">Seleccionar país</string>
+    <string name="dialog_btn_select_country">Select Country</string>
     <string name="dialog_txt_country">Country</string>
     <string name="home_txt_dismiss">Dismiss</string>
+    <string name="dialog_txt_category">Category\n</string>
 </resources>

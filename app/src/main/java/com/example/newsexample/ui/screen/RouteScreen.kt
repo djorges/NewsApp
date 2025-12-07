@@ -30,7 +30,7 @@ fun RouteScreen(
     val currentRoute = backStackEntry?.destination?.route
 
     val viewModel: NewsViewModel = koinViewModel()
-    val snackbarHostState = viewModel.snackbarHostState
+    val snackbarHostState = SnackbarHostState()
 
 
     Scaffold(
@@ -62,6 +62,7 @@ fun RouteScreen(
         NavigationHostUI(
             modifier=Modifier.padding(innerPadding),
             navController = navHostController,
+            snackbarHostState = snackbarHostState,
             viewModel = viewModel
         )
     }

@@ -1,6 +1,7 @@
 package com.example.newsexample.ui.composable
 
 import android.net.Uri
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
@@ -9,7 +10,6 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import com.example.newsexample.data.api.Article
-import com.example.newsexample.data.api.Source
 import com.example.newsexample.ui.screen.DetailScreen
 import com.example.newsexample.ui.screen.HomeScreen
 import com.example.newsexample.ui.screen.SavedScreen
@@ -22,6 +22,7 @@ import kotlinx.serialization.json.Json
 fun NavigationHostUI(
     navController: NavHostController,
     modifier: Modifier = Modifier,
+    snackbarHostState: SnackbarHostState,
     viewModel: NewsViewModel
 ){
     NavHost(
@@ -30,10 +31,14 @@ fun NavigationHostUI(
         modifier = modifier
     ){
         composable(Screens.HomeScreen.route){
-            HomeScreen(viewModel = viewModel, onItemClick = {article ->
-                val articleJson = Uri.encode(Json.encodeToString(article))
-                navController.navigate(Screens.DetailsScreen.passArticle(articleJson))
-            })
+            HomeScreen(
+                viewModel = viewModel,
+                snackbarHostState = snackbarHostState,
+                onItemClick = {article ->
+                    val articleJson = Uri.encode(Json.encodeToString(article))
+                    navController.navigate(Screens.DetailsScreen.passArticle(articleJson))
+                }
+            )
         }
         composable (Screens.SearchScreen.route){
             SearchScreen(viewModel = viewModel)
@@ -46,7 +51,9 @@ fun NavigationHostUI(
             val article = Json.decodeFromString<Article>(articleJson)
 
             DetailScreen(
-                article = article
+                article = article,
+                viewModel = viewModel,
+                snackbarHostState = snackbarHostState
             )
         }
 
