@@ -30,4 +30,12 @@ interface ArticleDao {
 
     @Query("DELETE FROM articles WHERE url = :url")
     suspend fun deleteByUrl(url: String)
+
+    @Query("""
+        SELECT * FROM articles
+        WHERE title LIKE '%' || :query || '%'
+        OR description LIKE '%' || :query || '%'
+        ORDER BY publishedAt DESC
+    """)
+    fun searchArticles(query: String): Flow<List<ArticleEntity>>
 }
